@@ -1,0 +1,25 @@
+# Website development and promotion, business process automation, CRM systems creation - smart-laboratory.ru
+
+User-agent: *
+Disallow: /public/*
+Disallow: /plugins/*
+Disallow: /assets/*
+Disallow: /cart/*
+Disallow: /user/*
+Disallow: /search/*
+Disallow: /*?search_string=
+Disallow: /*?page=
+Allow: /*.jpeg*
+Allow: /*.jpg*
+Allow: /*.gif*
+Allow: /*.js*
+Allow: /*.map*
+Allow: /*.css*
+Allow: /*.eot*
+Allow: /*.otf*
+Allow: /*.ttf*
+Allow: /*.woff*
+Allow: /*.png*
+Allow: /*.svg*
+Sitemap: https://backend.sap.smart-laboratory.ru/sitemap.xml
+#Crawl-delay: 20

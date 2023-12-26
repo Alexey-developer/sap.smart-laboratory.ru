@@ -1,0 +1,103 @@
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files .env.example>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files artisan>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files .gitignore>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files composer.json>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files composer.lock>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files package-lock.json>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files package.json>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files webpack.mix.js>
+    Order allow,deny
+    Deny from all
+</Files>
+
+Options -MultiViews -Indexes
+
+RewriteEngine On
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# Redirect Trailing Slashes If Not A Folder...
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [L,R=301]
+# Handle Front Controller...
+RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.gif|robots\.txt)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(css|js|images)/(.*)$ public/$1/$2 [L,NC]
+
+Redirect 301 /public/ /
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
+RewriteRule ^index\.php$ https://backend.sap.smart-laboratory.ru/ [R=301,L]
+Options +FollowSymLinks
+
+#хз
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/javascript text/css application/x-javascript
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4.0[678] no-gzip
+  BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+  <ifmodule mod_gzip.c>
+    mod_gzip_on Yes
+    mod_gzip_item_include file .js$
+    mod_gzip_item_include file .css$
+  </IfModule>
+</IfModule>
+
+# Включаем кэш в браузерах посетителей
+<ifModule mod_headers.c>
+  # Все html и htm файлы будут храниться в кэше браузера один час
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "max-age=3600"
+  </FilesMatch>
+  # Все css, javascript и текстовые файлы будут храниться в кэше браузера 24 часа
+  <FilesMatch "\.(js|css|txt)$">
+    Header set Cache-Control "max-age=86400"
+  </FilesMatch>
+  # Все флэш файлы и изображения будут храниться в кэше браузера 24 часа
+  <FilesMatch "\.(flv|swf|ico|gif|GIF|jpg|JPG|jpeg|png|PNG)$">
+    Header set Cache-Control "max-age=86400"
+  </FilesMatch>
+  # Отключаем кеширование php и других служебных файлов
+  <FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+    Header unset Cache-Control
+  </FilesMatch>
+</IfModule>
