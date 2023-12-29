@@ -15,5 +15,4 @@ use App\Http\Controllers\Api\v1\MainController;
 |
 */
 
-// Route::get('/', [MainController::class, 'index'])->name('index');
-Route::get('/{text}', [MainController::class, 'index'])->name('index');
+// Route::get('/{text}', [MainController::class, 'index'])->name('index');

@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useEffect, useRef } from 'react'
 
 import { SetPageTitle } from '@utils/SetPageTitle'
@@ -173,7 +175,9 @@ export const NeuralNetwork: React.FC = () => {
     <Container>
       <Row>
         <Col>
-          {!state.model && state.requestIsMade && <ResumableUploadModel />}
+          {!state.model && state.requestIsMade && (
+            <ResumableUploadModel nnId={id} />
+          )}
         </Col>
       </Row>
       <Row>

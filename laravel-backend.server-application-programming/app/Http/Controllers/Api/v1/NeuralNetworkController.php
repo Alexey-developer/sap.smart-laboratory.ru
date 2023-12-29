@@ -29,12 +29,18 @@ class NeuralNetworkController extends Controller
 
         $model = $neural_network->models()->firstOrFail();
 
+        // $command = escapeshellcmd('python3.8 /var/www/domains/backend.sap.smart-laboratory.ru/python/predict.py ' . '/var/www/domains/backend.sap.smart-laboratory.ru/' . str_replace('public\\', 'storage_local/', $path) . ' ' . '/var/www/domains/backend.sap.smart-laboratory.ru/storage_local/' . str_replace(['//'], '/', $model->path . '/' . $model->name));
         $command = escapeshellcmd('C:\Users\Пользователь\AppData\Local\Programs\Python\Python38\python.exe S:\server_application_programming\cnn\CNN\main.py ' . str_replace('public', 'S:\server_application_programming\laravel-backend.server-application-programming\public\storage', $path) . ' ' . str_replace('upload', 'S:\server_application_programming\laravel-backend.server-application-programming\public\storage\upload', str_replace(['//', '/'], '\\', $model->path . '\\' . $model->name)));
         $output = shell_exec($command);
 
         $output = preg_replace('/\s\s+/', ' ', $output);
 
-        $prediction_output = explode(' ', str_replace(['[', ']', "\n"], '', $output));
+        $sp1 = strpos($output, '[[');
+        $sp2 = strpos($output, ']]');
+
+        $output = substr($output, $sp1 + 2, $sp2 - $sp1 - 2);
+
+        $prediction_output = explode(' ', $output);
 
         $entities = $neural_network->entities;
 
@@ -52,27 +58,7 @@ class NeuralNetworkController extends Controller
             'prediction_output' => $results,
         ];
     }
-    // public function store_neural_network_model(NNModelRequest $request)
-    // {
-    //     // return $request->all();
 
-    //     if ($request->hasFile('model_file')) {
-    //         // return $request->file('model_file');
-    //         $path = $request->file('model_file')->storeAs(
-    //             $request->neural_network_id,
-    //             $request->file('model_file')->name
-    //         );
-    //     }
-
-    //     return ['1' => 1, '2' => $path];
-
-    //     // $nn_model = new NNModel;
-    //     // $nn_model->name = $request->name;
-    //     // $nn_model->neural_network_id = $neural_network->id;
-    //     // $nn_model->save();
-
-    //     // return $nn_model;
-    // }
     public function get_user_neural_networks()
     {
         return Auth::user()->neural_networks()->with('entities')->get();
@@ -112,44 +98,4 @@ class NeuralNetworkController extends Controller
 
         return 'success';
     }
-
-    // /**
-    //  * Display a listing of the resource.
-    //  */
-    // public function index()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(NeuralNetwork $neuralNetwork)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, NeuralNetwork $neuralNetwork)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(NeuralNetwork $neuralNetwork)
-    // {
-    //     //
-    // }
 }

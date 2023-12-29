@@ -20,13 +20,14 @@ class NNModelController extends Controller
 {
     public function store_neural_network_model(Request $request)
     {
-        // $neural_network = NeuralNetwork::findOrFail($request->neural_network_id);
-        // if (!$neural_network) {
-        //     return ['error' => 'Нейросеть не найдена!'];
-        // }
-        // if (Auth::user()->id != $neural_network->user_id) {
-        //     return ['error' => 'Невозможно загрузить модель в чужую нейросеть!'];
-        // }
+        $neural_network_id = $request->header('X-NN-Id');
+        $neural_network = NeuralNetwork::findOrFail($neural_network_id);
+        if (!$neural_network) {
+            return ['error' => 'Нейросеть не найдена!'];
+        }
+        if (Auth::user()->id != $neural_network->user_id) {
+            return ['error' => 'Невозможно загрузить модель в чужую нейросеть!'];
+        }
 
         // create the file receiver
         $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
@@ -44,7 +45,7 @@ class NNModelController extends Controller
             // save the file and return any response you need, current example uses `move` function. If you are
             // not using move, you need to manually delete the file by unlink($save->getFile()->getPathname())
 
-            $extra_path = 'models/nn/' . $request->neural_network_id . '/';
+            $extra_path = 'models/nn/' . $neural_network->id . '/';
 
             $saved_file = $this->save_file($save->getFile(), $extra_path);
 
@@ -54,7 +55,7 @@ class NNModelController extends Controller
             // $nn_model->size = $saved_file['size'];
             $nn_model->extension = $saved_file['mime_type'];
             $nn_model->path = $saved_file['relative_path'];
-            $nn_model->neural_network_id = 1; //$neural_network->id;
+            $nn_model->neural_network_id = $neural_network->id;
             $nn_model->save();
 
             return $nn_model;
@@ -109,60 +110,4 @@ class NNModelController extends Controller
 
         return $filename;
     }
-
-    // /**
-    //  * Display a listing of the resource.
-    //  */
-    // public function index()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(NNModel $nNModel)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(NNModel $nNModel)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, NNModel $nNModel)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(NNModel $nNModel)
-    // {
-    //     //
-    // }
 }

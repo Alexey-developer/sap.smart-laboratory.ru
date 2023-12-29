@@ -75,22 +75,7 @@ class EntityController extends Controller
 
         $zip_name = 'images-' . \Carbon\Carbon::now()->timestamp . rand(999, 9999999999999) . '.zip';
 
-        // if ($zip->open(sys_get_temp_dir() . '\\' . $zip_name, ZipArchive::CREATE) === TRUE) {
-
-        //     foreach ($images as $image) {
-        //         $filename = 'image-' . \Carbon\Carbon::now()->timestamp . rand(999, 9999999999999) . '.jpg';
-        //         $tempImage = tempnam(sys_get_temp_dir(), $filename);
-        //         copy("https:$image->small_size_url", $tempImage);
-
-        //         $zip->addFile($tempImage, $filename);
-        //     }
-
-        //     $zip->close();
-        //     // return response()->download(sys_get_temp_dir() . '\\' . $zip_name, $zip_name);
-        //     return ['download_url' => sys_get_temp_dir() . '\\' . $zip_name];
-        // } else {
-
-        // Image::make('http://f2b9x.s87.it/images/1/FR_laura-kithorizontal.gif')->save(public_path('images/saveAsImageName.jpg'));
+        // if ($zip->open(storage_path() . '/app/public/' . $zip_name, ZipArchive::CREATE) === TRUE) {
         if ($zip->open(storage_path() . '\\app\\public\\' . $zip_name, ZipArchive::CREATE) === TRUE) {
 
             foreach ($images as $image) {
@@ -104,6 +89,7 @@ class EntityController extends Controller
             $zip->close();
             // return response()->download(sys_get_temp_dir() . '\\' . $zip_name, $zip_name);
             return ['download_url' => storage_path() . '\\app\\public\\' . $zip_name];
+            // return ['download_url' => '//backend.sap.smart-laboratory.ru/storage_local/' . $zip_name];
         } else {
             return ['error' => 'Ошибка создания архива!'];
         }

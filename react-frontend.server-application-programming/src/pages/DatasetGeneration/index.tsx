@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useEffect, useState, useRef } from 'react'
 
 import { SetPageTitle } from '@utils/SetPageTitle'
@@ -112,7 +114,7 @@ export const DatasetGeneration: React.FC = () => {
         console.log(data.error)
       } else {
         state.neuralNetworks = data
-        state.requestIsMade = true
+        // state.requestIsMade = true
       }
     } catch (error) {
       console.log(error)

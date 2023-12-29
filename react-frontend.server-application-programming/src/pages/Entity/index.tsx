@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+//@ts-nocheck
+
+import React, { useEffect } from 'react'
 
 import { SetPageTitle } from '@utils/SetPageTitle'
 

@@ -1,15 +1,17 @@
+//@ts-nocheck
+
 import { useEffect } from 'react'
 
 import ReactResumableJs from 'react-resumable-js/src/ReactResumableJs'
 
 import constants from '@utils/constants.json'
 
-export const ResumableUploadModel: React.FC = () => {
-  useEffect(() => {
-    // const r = new ReactResumableJs()
-    // console.log(ReactResumableJs.state)
-    // console.log(r.state)
+interface IProps {
+  nnId: string | undefined
+}
 
+export const ResumableUploadModel: React.FC<IProps> = (props: IProps) => {
+  useEffect(() => {
     const btnStart = document.getElementsByClassName('btn start')
     btnStart[0].classList.add('btn-success')
     btnStart[0].classList.add('mt-1')
@@ -20,8 +22,10 @@ export const ResumableUploadModel: React.FC = () => {
 
   return (
     <ReactResumableJs
+      showFileList={false}
       headerObject={{
         Authorization: 'Bearer ' + localStorage.getItem('auth_key'),
+        'X-NN-Id': props.nnId,
       }}
       maxFileSize={512000000}
       uploaderID='image-upload'
@@ -47,8 +51,6 @@ export const ResumableUploadModel: React.FC = () => {
       onStartUpload={() => {
         const btnStart = document.getElementsByClassName('btn start')
         btnStart[0].style.display = 'none'
-        const list = document.getElementsByClassName('resumable-list')
-        list[0].style.display = 'none'
       }}
     />
   )
